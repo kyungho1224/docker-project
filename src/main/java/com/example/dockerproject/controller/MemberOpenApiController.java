@@ -15,4 +15,9 @@ public class MemberOpenApiController {
         return "Welcome~";
     }
 
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello~";
+    }
+
 }
