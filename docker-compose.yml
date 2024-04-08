@@ -4,3 +4,4 @@ services:
       - "8080:8080"
     container_name: docker-project
     image: kimkyungho/docker-project
+    restart: always
