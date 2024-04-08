@@ -1,0 +1,6 @@
+services:
+  application:
+    ports:
+      - "8080:8080"
+    container_name: docker-project
+    image: kimkyungho/docker-project
