@@ -32,11 +32,8 @@ jobs:
           docker build --platform linux/amd64 -t ${{ secrets.DOCKER_REPO }}
           docker push ${{ secrets.DOCKER_REPO }}
 
-      - name: SSH Connection & Depoy
+      - name: SSH Connection & Deploy
         uses: appleboy/ssh-action@master
-        env:
-          APP: "docker-project"
-          COMPOSE: "/home/ubuntu/compose/docker-compose.yml"
         with:
           username: ubuntu
           host: ${{ secrets.EC2_HOST }}
@@ -44,6 +41,6 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            sudo docker-compose -f $COMPOSE down
+            sudo docker-compose -f /home/ubuntu/compose/docker-compose.yml down
 #           모든 이미지 삭제하는 스크립트가 필요할 것 같음
-            sudo docker-compose -f $COMPOSE up -d
+            sudo docker-compose -f /home/ubuntu/compose/docker-compose.yml up -d
