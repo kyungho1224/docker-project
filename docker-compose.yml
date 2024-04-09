@@ -18,7 +18,7 @@ services:
       - "--collation-server=utf8mb4_unicode_ci"
       - "--bind-address=0.0.0.0"
     networks:
-      - compose_default
+      - docker_network
 
   application:
     ports:
@@ -33,4 +33,7 @@ services:
       SPRING_DATASOURCE_USERNAME: "kimkyungho"
       SPRING_DATASOURCE_PASSWORD: "kimkyugnho1234!!"
     networks:
-      - compose_default
+      - docker_network
+
+networks:
+  docker_network:
