@@ -61,4 +61,4 @@ jobs:
             sudo docker-compose -f $COMPOSE down
             sudo docker pull ${{ secrets.DOCKER_REPO }}
             sudo docker-compose -f $COMPOSE up -d
-            sudo docker images prune -a --force
+            sudo docker image prune -a --force
