@@ -61,4 +61,3 @@ jobs:
             sudo docker-compose -f $COMPOSE down
             sudo docker pull ${{ secrets.DOCKER_REPO }}
             sudo docker-compose -f $COMPOSE up -d
-            sudo docker rmi ${{ secrets.DOCKER_REPO }}
