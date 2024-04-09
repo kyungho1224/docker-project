@@ -63,4 +63,22 @@ public class MemberDto {
         }
     }
 
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    @Getter
+    public static class SimpleInfo {
+        private Long id;
+        private String username;
+        private String email;
+
+        public static SimpleInfo of(Member member) {
+            return SimpleInfo.builder()
+              .id(member.getId())
+              .username(member.getUsername())
+              .email(member.getEmail())
+              .build();
+        }
+    }
+
 }

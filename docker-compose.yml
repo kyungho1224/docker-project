@@ -5,7 +5,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: RESERVATION
+      MYSQL_DATABASE: reservation
       MYSQL_ROOT_HOST: '%'
       MYSQL_ROOT_PASSWORD: root1234!!
       TZ: 'Asia/Seoul'
@@ -29,9 +29,9 @@ services:
     depends_on:
       - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/RESERVATION
-      SPRING_DATASOURCE_USERNAME: "kimkyungho"
-      SPRING_DATASOURCE_PASSWORD: "kimkyugnho1234!!"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/reservation
+      SPRING_DATASOURCE_USERNAME: kimkyungho
+      SPRING_DATASOURCE_PASSWORD: kimkyungho1234!!
     networks:
       - docker_network
 

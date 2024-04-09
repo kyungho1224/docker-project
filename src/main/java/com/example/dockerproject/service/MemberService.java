@@ -20,4 +20,13 @@ public class MemberService {
         return MemberDto.MemberJoinResponse.of(savedMember);
     }
 
+    public MemberDto.MemberLoginResponse loginMember(MemberDto.MemberLoginRequest request) {
+        return null;
+    }
+
+    public MemberDto.SimpleInfo getMember(Long memberId) {
+        return memberRepository.findById(memberId)
+          .map(MemberDto.SimpleInfo::of)
+          .orElseThrow(() -> new RuntimeException("Not Found Member"));
+    }
 }

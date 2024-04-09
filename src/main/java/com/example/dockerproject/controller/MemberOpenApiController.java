@@ -26,8 +26,24 @@ public class MemberOpenApiController {
     @PostMapping("/join")
     public ResponseEntity<MemberDto.MemberJoinResponse> join(
       @RequestBody MemberDto.MemberJoinRequest request
-      ) {
+    ) {
         MemberDto.MemberJoinResponse response = memberService.createMember(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<MemberDto.MemberLoginResponse> login(
+      @RequestBody MemberDto.MemberLoginRequest request
+    ) {
+        var response = memberService.loginMember(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{memberId}")
+    public ResponseEntity<MemberDto.SimpleInfo> getMember(
+      @PathVariable Long memberId
+    ) {
+        var response = memberService.getMember(memberId);
         return ResponseEntity.ok(response);
     }
 
