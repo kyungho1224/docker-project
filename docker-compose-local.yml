@@ -10,8 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       TZ: 'Asia/Seoul'
     volumes:
-      - /home/ubuntu/mysql/data:/var/lib/mysql
-      - /mysql/conf.d:/etc/mysql/conf.d
+      - /Users/kimkyungho/dev/mysql:/var/lib/mysql
     command:
       - "mysqld"
       - "--character-set-server=utf8mb4"
