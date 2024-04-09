@@ -5,3 +5,16 @@ services:
     container_name: docker-project
     image: kimkyungho/docker-project
     restart: always
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: docker-mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - /home/ubuntu/mysql/data:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci

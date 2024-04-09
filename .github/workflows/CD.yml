@@ -20,6 +20,10 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: Copy application.yml
+        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.yml
+        shell: bash
+
       - name: Add permission
         run: chmod +x gradlew
 
