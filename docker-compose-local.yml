@@ -1,4 +1,13 @@
 services:
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - docker_network
+    volumes:
+      - /Users/kimkyungho/dev/redis:/data
+
   mysql:
     image: mysql:8.0
     container_name: docker-mysql
@@ -16,21 +25,6 @@ services:
       - "--character-set-server=utf8mb4"
       - "--collation-server=utf8mb4_unicode_ci"
       - "--bind-address=0.0.0.0"
-    networks:
-      - docker_network
-
-  application:
-    ports:
-      - "8080:8080"
-    container_name: docker-project
-    image: kimkyungho/docker-project
-    restart: always
-    depends_on:
-      - mysql
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     networks:
       - docker_network
 

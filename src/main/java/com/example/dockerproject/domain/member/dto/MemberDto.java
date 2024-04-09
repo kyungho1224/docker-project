@@ -1,6 +1,6 @@
-package com.example.dockerproject.dto;
+package com.example.dockerproject.domain.member.dto;
 
-import com.example.dockerproject.entity.Member;
+import com.example.dockerproject.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,15 +50,18 @@ public class MemberDto {
     @Builder
     @Getter
     public static class MemberLoginResponse {
+
         private Long id;
         private String username;
         private String email;
+        private String accessToken;
 
-        public static MemberLoginResponse of(Member member) {
+        public static MemberLoginResponse of(Member member, String accessToken) {
             return MemberLoginResponse.builder()
               .id(member.getId())
               .username(member.getUsername())
               .email(member.getEmail())
+              .accessToken(accessToken)
               .build();
         }
     }

@@ -1,7 +1,7 @@
-package com.example.dockerproject.controller;
+package com.example.dockerproject.domain.member.controller;
 
-import com.example.dockerproject.dto.MemberDto;
-import com.example.dockerproject.service.MemberService;
+import com.example.dockerproject.domain.member.dto.MemberDto;
+import com.example.dockerproject.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,15 +36,8 @@ public class MemberOpenApiController {
       @RequestBody MemberDto.MemberLoginRequest request
     ) {
         var response = memberService.loginMember(request);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/{memberId}")
-    public ResponseEntity<MemberDto.SimpleInfo> getMember(
-      @PathVariable Long memberId
-    ) {
-        var response = memberService.getMember(memberId);
-        return ResponseEntity.ok(response);
+        var header = memberService.setHeaderAccessToken(response.getAccessToken());
+        return ResponseEntity.ok().headers(header).body(response);
     }
 
 }
