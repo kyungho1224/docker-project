@@ -38,12 +38,19 @@ services:
     restart: always
     depends_on:
       - mysql
+      - redis
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    volumes:
+      - /home/ubuntu/logs:/app/logs
     networks:
       - docker_network
 
 networks:
   docker_network:
+
+#volumes:
+#  server-log:
+#    external: true
