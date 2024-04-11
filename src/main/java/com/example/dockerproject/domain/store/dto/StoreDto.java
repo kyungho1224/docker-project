@@ -1,8 +1,7 @@
-package com.example.dockerproject.domain.member.dto;
+package com.example.dockerproject.domain.store.dto;
 
 import com.example.dockerproject.common.constant.RegisterStatus;
-import com.example.dockerproject.domain.member.constant.MemberRole;
-import com.example.dockerproject.domain.member.entity.Member;
+import com.example.dockerproject.domain.store.entity.Store;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-public class MemberDto {
+public class StoreDto {
 
     @AllArgsConstructor
     @NoArgsConstructor
@@ -19,8 +18,10 @@ public class MemberDto {
     @Getter
     public static class JoinRequest {
 
-        @NotBlank(message = "이름은 필수 입력입니다")
+        @NotBlank(message = "상점명은 필수 입력입니다")
         private String name;
+
+        private String description;
 
         @NotBlank(message = "이메일은 필수 입력입니다")
         private String email;
@@ -44,23 +45,21 @@ public class MemberDto {
 
         private Long id;
         private String name;
+        private String description;
         private String email;
         private String mobile;
         private String address;
-        private RegisterStatus registerStatus;
-        private MemberRole memberRole;
         private LocalDateTime createdAt;
 
-        public static JoinResponse of(Member member) {
+        public static JoinResponse of(Store store) {
             return JoinResponse.builder()
-              .id(member.getId())
-              .name(member.getName())
-              .email(member.getEmail())
-              .mobile(member.getMobile())
-              .address(member.getAddress())
-              .registerStatus(member.getRegisterStatus())
-              .memberRole(member.getMemberRole())
-              .createdAt(member.getCreatedAt())
+              .id(store.getId())
+              .name(store.getName())
+              .description(store.getDescription())
+              .email(store.getEmail())
+              .mobile(store.getMobile())
+              .address(store.getAddress())
+              .createdAt(store.getCreatedAt())
               .build();
         }
 
@@ -90,10 +89,10 @@ public class MemberDto {
         private String email;
         private String accessToken;
 
-        public static LoginResponse of(Member member, String accessToken) {
+        public static LoginResponse of(Store store, String accessToken) {
             return LoginResponse.builder()
-              .id(member.getId())
-              .email(member.getEmail())
+              .id(store.getId())
+              .email(store.getEmail())
               .accessToken(accessToken)
               .build();
         }
@@ -109,16 +108,14 @@ public class MemberDto {
         private Long id;
         private String name;
         private String email;
-        private MemberRole memberRole;
         private LocalDateTime createdAt;
 
-        public static SimpleInfo of(Member member) {
+        public static SimpleInfo of(Store store) {
             return SimpleInfo.builder()
-              .id(member.getId())
-              .name(member.getName())
-              .email(member.getEmail())
-              .memberRole(member.getMemberRole())
-              .createdAt(member.getCreatedAt())
+              .id(store.getId())
+              .name(store.getName())
+              .email(store.getEmail())
+              .createdAt(store.getCreatedAt())
               .build();
         }
 
@@ -132,25 +129,25 @@ public class MemberDto {
 
         private Long id;
         private String name;
+        private String description;
         private String email;
         private String mobile;
         private String address;
         private RegisterStatus registerStatus;
-        private MemberRole memberRole;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
-        public static DetailInfo of(Member member) {
+        public static DetailInfo of(Store store) {
             return DetailInfo.builder()
-              .id(member.getId())
-              .name(member.getName())
-              .email(member.getEmail())
-              .mobile(member.getMobile())
-              .address(member.getAddress())
-              .registerStatus(member.getRegisterStatus())
-              .memberRole(member.getMemberRole())
-              .createdAt(member.getCreatedAt())
-              .updatedAt(member.getUpdatedAt())
+              .id(store.getId())
+              .name(store.getName())
+              .description(store.getDescription())
+              .email(store.getEmail())
+              .mobile(store.getMobile())
+              .address(store.getAddress())
+              .registerStatus(store.getRegisterStatus())
+              .createdAt(store.getCreatedAt())
+              .updatedAt(store.getUpdatedAt())
               .build();
         }
 

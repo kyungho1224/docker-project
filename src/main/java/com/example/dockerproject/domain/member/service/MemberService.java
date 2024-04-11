@@ -24,13 +24,13 @@ public class MemberService {
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public MemberDto.MemberJoinResponse createMember(MemberDto.MemberJoinRequest request) {
+    public MemberDto.JoinResponse createMember(MemberDto.JoinRequest request) {
         Member newMember = Member.createOf(request, passwordEncoder.encode(request.getPassword()));
         Member savedMember = memberRepository.save(newMember);
-        return MemberDto.MemberJoinResponse.of(savedMember);
+        return MemberDto.JoinResponse.of(savedMember);
     }
 
-    public MemberDto.MemberLoginResponse loginMember(MemberDto.MemberLoginRequest request) {
+    public MemberDto.LoginResponse loginMember(MemberDto.LoginRequest request) {
         log.info("MemberService loginMember");
         // 비밀번호 체크
         // 토큰 생성
@@ -44,15 +44,9 @@ public class MemberService {
               refreshTokenRepository.setRefreshToken(tokenDto);
               log.info("MemberService login access : {}", tokenDto.getAccessToken());
               log.info("MemberService login refresh : {}", tokenDto.getRefreshToken());
-              return MemberDto.MemberLoginResponse.of(member, tokenDto.getAccessToken());
+              return MemberDto.LoginResponse.of(member, tokenDto.getAccessToken());
 
           })
-          .orElseThrow(() -> new RuntimeException("Not Found Member"));
-    }
-
-    public MemberDto.SimpleInfo getMember(Long memberId) {
-        return memberRepository.findById(memberId)
-          .map(MemberDto.SimpleInfo::of)
           .orElseThrow(() -> new RuntimeException("Not Found Member"));
     }
 

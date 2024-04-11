@@ -1,8 +1,8 @@
 package com.example.dockerproject.domain.token.dto;
 
-import com.example.dockerproject.domain.member.constant.MemberRole;
 import com.example.dockerproject.common.constant.RegisterStatus;
-import com.example.dockerproject.domain.member.entity.Member;
+import com.example.dockerproject.domain.store.constant.StoreRole;
+import com.example.dockerproject.domain.store.entity.Store;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,27 +18,27 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Getter
-public class MemberDetails implements UserDetails {
+public class StoreDetails implements UserDetails {
 
     private Long id;
     private String email;
     private String password;
-    private MemberRole memberRole;
+    private StoreRole storeRole;
     private RegisterStatus registerStatus;
 
-    public static MemberDetails of(Member member) {
-        return MemberDetails.builder()
-          .id(member.getId())
-          .email(member.getEmail())
-          .password(member.getPassword())
-          .memberRole(member.getMemberRole())
-          .registerStatus(member.getRegisterStatus())
+    public static StoreDetails of(Store store) {
+        return StoreDetails.builder()
+          .id(store.getId())
+          .email(store.getEmail())
+          .password(store.getPassword())
+          .storeRole(store.getStoreRole())
+          .registerStatus(store.getRegisterStatus())
           .build();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.memberRole.toString()));
+        return List.of(new SimpleGrantedAuthority(this.storeRole.toString()));
     }
 
     @Override

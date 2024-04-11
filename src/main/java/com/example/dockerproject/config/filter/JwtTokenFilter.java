@@ -3,6 +3,7 @@ package com.example.dockerproject.config.filter;
 import com.example.dockerproject.domain.token.dto.TokenDto;
 import com.example.dockerproject.domain.token.repository.RefreshTokenRepository;
 import com.example.dockerproject.domain.token.service.MemberDetailService;
+import com.example.dockerproject.domain.token.service.StoreDetailService;
 import com.example.dockerproject.domain.token.util.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,6 +29,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final MemberDetailService memberDetailService;
+    private final StoreDetailService storeDetailService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -38,11 +40,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             boolean isExpired = jwtProvider.isTokenExpire(accessToken);
             if (!isExpired) {
                 String email = jwtProvider.validateToken(accessToken);
-                UserDetails user = memberDetailService.loadUserByUsername(email);
-                UsernamePasswordAuthenticationToken authentication =
-                  new UsernamePasswordAuthenticationToken(
-                    user, null, user.getAuthorities()
-                  );
+                UsernamePasswordAuthenticationToken authentication;
+                UserDetails user;
+                if (isMemberRequest(request)) {
+                    user = memberDetailService.loadUserByUsername(email);
+                } else {
+                    user = storeDetailService.loadUserByUsername(email);
+                }
+                authentication = new UsernamePasswordAuthenticationToken(
+                  user, null, user.getAuthorities()
+                );
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
@@ -62,6 +69,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isMemberRequest(HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
+        return requestUri.contains("members");
     }
 
 }
