@@ -37,8 +37,9 @@ public class SecurityConfig {
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setAllowedOriginPatterns(List.of(
-              "https://kimkyungho.p-e.kr",
-              "https://52.78.187.122"
+                "https://kimkyungho.p-e.kr",
+                "https://52.78.187.122",
+                "https://kimkyungho.p-e.kr/v3/api-docs/swagger-config"
             ));
             config.setAllowCredentials(true);
             return config;
@@ -48,19 +49,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-          .httpBasic(AbstractHttpConfigurer::disable)
-          .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
-          .csrf(AbstractHttpConfigurer::disable)
-          .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-          .authorizeHttpRequests(request -> request
-            .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-            .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-            .requestMatchers("/open-api/**").permitAll()
-            .anyRequest().authenticated()
-          )
-          .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-          .formLogin(Customizer.withDefaults())
-          .logout(Customizer.withDefaults())
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(request -> request
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/open-api/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+            .formLogin(Customizer.withDefaults())
+            .logout(Customizer.withDefaults())
         ;
         return httpSecurity.build();
     }
