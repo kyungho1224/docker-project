@@ -10,6 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -32,6 +35,10 @@ public class Review extends BaseEntity {
     @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL COMMENT '등록 상태'")
     private RegisterStatus registerStatus;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Comment> comments = new ArrayList<>();
+
     public static Review createOf(Member member, ReviewDto.RegisterRequest request) {
         return Review.builder()
             .member(member)
@@ -48,6 +55,14 @@ public class Review extends BaseEntity {
 
     public void delete() {
         this.registerStatus = RegisterStatus.UNREGISTERED;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
+    public void removeComment(Comment comment) {
+        this.comments.remove(comment);
     }
 
 }

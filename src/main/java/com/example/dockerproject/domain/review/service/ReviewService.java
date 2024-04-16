@@ -6,6 +6,8 @@ import com.example.dockerproject.domain.member.service.MemberService;
 import com.example.dockerproject.domain.review.dto.ReviewDto;
 import com.example.dockerproject.domain.review.entity.Review;
 import com.example.dockerproject.domain.review.repository.ReviewRepository;
+import com.example.dockerproject.exception.ApiErrorCode;
+import com.example.dockerproject.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,32 +33,38 @@ public class ReviewService {
         memberService.getMember(email);
         return reviewRepository.findByIdAndRegisterStatus(reviewId, RegisterStatus.REGISTERED)
           .map(ReviewDto.DetailInfo::of)
-          .orElseThrow(() -> new RuntimeException("Not found review"));
+          .orElseThrow(() -> new ApiException(ApiErrorCode.NOT_FOUND_REVIEW));
     }
 
     public Page<ReviewDto.SimpleInfo> selectAll(String email, Pageable pageable) {
         memberService.getMember(email);
-        System.out.println("--------------------- : " + RegisterStatus.REGISTERED);
         return reviewRepository.findAllByRegisterStatus(RegisterStatus.REGISTERED, pageable)
           .map(ReviewDto.SimpleInfo::of);
     }
 
     public ReviewDto.DetailInfo update(String email, Long reviewId, ReviewDto.RegisterRequest request) {
         Member member = memberService.getMember(email);
-        return reviewRepository.findByIdAndRegisterStatus(reviewId, RegisterStatus.REGISTERED)
-          .filter(review -> review.getMember().equals(member))
-          .map(review -> {
-              review.updateData(request);
-              return reviewRepository.save(review);
-          })
-          .map(ReviewDto.DetailInfo::of)
-          .orElseThrow(() -> new RuntimeException("Not found review"));
+        Review review = getReview(reviewId);
+        if (review.getMember().equals(member)) {
+            review.updateData(request);
+            Review updatedReview = reviewRepository.save(review);
+            return ReviewDto.DetailInfo.of(updatedReview);
+        }
+        throw new RuntimeException("denied permission");
     }
 
     public void delete(String email, Long reviewId) {
         Member member = memberService.getMember(email);
-        reviewRepository.findByIdAndRegisterStatus(reviewId, RegisterStatus.REGISTERED)
-          .orElseThrow(() -> new RuntimeException("Not found review"));
+        Review review = getReview(reviewId);
+        if (review.getMember().equals(member)) {
+            review.delete();
+        }
+        throw new RuntimeException("denied permission");
+    }
+
+    public Review getReview(Long reviewId) {
+        return reviewRepository.findByIdAndRegisterStatus(reviewId, RegisterStatus.REGISTERED)
+          .orElseThrow(() -> new ApiException(ApiErrorCode.NOT_FOUND_REVIEW));
     }
 
 }

@@ -7,9 +7,13 @@ import com.example.dockerproject.domain.review.dto.CommentDto;
 import com.example.dockerproject.domain.review.entity.Comment;
 import com.example.dockerproject.domain.review.entity.Review;
 import com.example.dockerproject.domain.review.repository.CommentRepository;
+import com.example.dockerproject.exception.ApiErrorCode;
+import com.example.dockerproject.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -18,13 +22,20 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final MemberService memberService;
+    private final ReviewService reviewService;
 
-    public CommentDto.Response create(String email, CommentDto.Request request) {
+    public CommentDto.Response create(String email, Long reviewId, CommentDto.Request request) {
         Member member = memberService.getMember(email);
-        Review review = null;
-        Comment parent = null;
+        Review review = reviewService.getReview(reviewId);
+        Comment parent = request.getParentId() != null ? getComment(request.getParentId()) : null;
+
         Comment newComment = Comment.createOf(member, review, parent, request.getContents());
         Comment savedComment = commentRepository.save(newComment);
+        Optional.ofNullable(parent).ifPresentOrElse(it -> {
+            it.addComment(savedComment);
+        }, () -> {
+            review.addComment(savedComment);
+        });
         return CommentDto.Response.of(savedComment);
     }
 
@@ -40,14 +51,17 @@ public class CommentService {
     }
 
     public void delete(String email, Long commentId) {
-        memberService.getMember(email);
+        Member currentMember = memberService.getMember(email);
         Comment comment = getComment(commentId);
-        comment.delete();
+        if (currentMember.equals(comment.getMember())) {
+            comment.delete();
+        }
+        throw new RuntimeException("denied permission");
     }
 
     public Comment getComment(Long commentId) {
         return commentRepository.findFirstByIdAndRegisterStatus(commentId, RegisterStatus.REGISTERED)
-          .orElseThrow(() -> new RuntimeException("Not found comment"));
+          .orElseThrow(() -> new ApiException(ApiErrorCode.NOT_FOUND_COMMENT));
     }
 
 }

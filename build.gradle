@@ -44,6 +44,11 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //dsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 tasks.named('bootBuildImage') {
@@ -56,4 +61,8 @@ tasks.named('test') {
 
 bootJar {
     archiveFileName = 'app.jar'
+}
+
+clean {
+    delete file('src/main/generated')
 }

@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -29,9 +30,7 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "review_id")
     private Review review;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Comment comment;
-
+    @Column(nullable = false, columnDefinition = "VARCHAR(100) NOT NULL COMMENT '댓글 내용'")
     private String contents;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,8 +38,10 @@ public class Comment extends BaseEntity {
     @JsonIgnore
     private Comment parent;
 
-    @OneToMany(mappedBy = "parent", orphanRemoval = true)
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @JsonIgnore
+    private List<Comment> comments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL COMMENT '등록 상태'")
@@ -52,6 +53,7 @@ public class Comment extends BaseEntity {
           .contents(contents)
           .review(review)
           .parent(parent)
+          .registerStatus(RegisterStatus.REGISTERED)
           .build();
     }
 
@@ -61,6 +63,14 @@ public class Comment extends BaseEntity {
 
     public void delete() {
         this.registerStatus = RegisterStatus.UNREGISTERED;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
+    public void removeComment(Comment comment) {
+        this.comments.remove(comment);
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.dockerproject.domain.store.entity;
 import com.example.dockerproject.common.constant.RegisterStatus;
 import com.example.dockerproject.common.entity.BaseEntity;
 import com.example.dockerproject.domain.store.dto.NoticeDto;
+import com.querydsl.core.annotations.QueryEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "notices")
 @Entity
+@QueryEntity
 public class Notice extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

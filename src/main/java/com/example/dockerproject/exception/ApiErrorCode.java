@@ -13,6 +13,8 @@ public enum ApiErrorCode {
     NOT_FOUND_STORE(HttpStatus.NOT_FOUND.value(), "Not found store"),
     NOT_FOUND_PRODUCT(HttpStatus.NOT_FOUND.value(), "Not found product"),
     NOT_FOUND_NOTICE(HttpStatus.NOT_FOUND.value(), "Not found notice"),
+    NOT_FOUND_REVIEW(HttpStatus.NOT_FOUND.value(), "Not found review"),
+    NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND.value(), "Not found comment"),
     ;
 
     private final Integer errorCode;

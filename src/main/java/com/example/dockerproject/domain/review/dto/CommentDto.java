@@ -20,8 +20,6 @@ public class CommentDto {
     public static class Request {
 
         private String contents;    // 내용
-
-        private Long reviewId;  // 게시글
         private Long parentId;    // 부모댓글
 
     }
@@ -43,20 +41,13 @@ public class CommentDto {
               .contents(comment.getContents())
               .review(ReviewDto.SimpleInfo.of(comment.getReview()))
               .parent(comment.getParent())
+              .createdAt(comment.getCreatedAt())
               .build();
         }
 
         public static List<Response> of(List<Comment> comments) {
             return comments.stream().map(Response::of).toList();
         }
-
-    }
-
-    public static class SimpleInfo {
-
-    }
-
-    public static class DetailInfo {
 
     }
 

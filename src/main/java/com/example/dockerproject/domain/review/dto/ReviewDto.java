@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ReviewDto {
 
@@ -67,12 +68,14 @@ public class ReviewDto {
     @Builder
     @Getter
     public static class DetailInfo {
+
         private Long id;
         private String title;
         private String contents;
         private RegisterStatus registerStatus;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+        private List<CommentDto.Response> commentList;
 
         public static DetailInfo of(Review review) {
             return DetailInfo.builder()
@@ -82,6 +85,7 @@ public class ReviewDto {
               .registerStatus(review.getRegisterStatus())
               .createdAt(review.getCreatedAt())
               .updatedAt(review.getUpdatedAt())
+              .commentList(CommentDto.Response.of(review.getComments()))
               .build();
         }
     }

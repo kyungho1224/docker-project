@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/api/reviews/{reviewId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
@@ -18,15 +18,17 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<CommentDto.Response> register(
       Authentication authentication,
+      @PathVariable Long reviewId,
       @RequestBody CommentDto.Request request
     ) {
-        var response = commentService.create(authentication.getName(), request);
+        var response = commentService.create(authentication.getName(), reviewId, request);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{commentId}")
     public ResponseEntity<CommentDto.Response> modify(
       Authentication authentication,
+      @PathVariable Long reviewId,
       @PathVariable Long commentId,
       @RequestBody CommentDto.Request request
     ) {
@@ -37,6 +39,7 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> unregister(
       Authentication authentication,
+      @PathVariable Long reviewId,
       @PathVariable Long commentId
     ) {
         commentService.delete(authentication.getName(), commentId);
