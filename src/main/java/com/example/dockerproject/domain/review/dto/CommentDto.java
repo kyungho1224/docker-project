@@ -1,8 +1,6 @@
 package com.example.dockerproject.domain.review.dto;
 
-import com.example.dockerproject.domain.member.entity.Member;
 import com.example.dockerproject.domain.review.entity.Comment;
-import com.example.dockerproject.domain.review.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,7 +29,7 @@ public class CommentDto {
     public static class Response {
         private Long id;
         private String contents;
-        private ReviewDto.SimpleInfo review;
+//        private ReviewDto.SimpleInfo review;
         private Comment parent;
         private LocalDateTime createdAt;
 
@@ -39,7 +37,7 @@ public class CommentDto {
             return Response.builder()
               .id(comment.getId())
               .contents(comment.getContents())
-              .review(ReviewDto.SimpleInfo.of(comment.getReview()))
+//              .review(ReviewDto.SimpleInfo.of(comment.getReview()))
               .parent(comment.getParent())
               .createdAt(comment.getCreatedAt())
               .build();

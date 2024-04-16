@@ -1,6 +1,7 @@
 package com.example.dockerproject.domain.review.dto;
 
 import com.example.dockerproject.common.constant.RegisterStatus;
+import com.example.dockerproject.domain.review.entity.Comment;
 import com.example.dockerproject.domain.review.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
