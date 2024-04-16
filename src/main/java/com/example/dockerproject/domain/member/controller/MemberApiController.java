@@ -21,7 +21,7 @@ public class MemberApiController {
       Authentication authentication
     ) {
         var response = memberService.getMember(authentication.getName());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(MemberDto.SimpleInfo.of(response));
     }
 
 }

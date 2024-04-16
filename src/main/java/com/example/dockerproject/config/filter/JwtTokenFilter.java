@@ -73,7 +73,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private boolean isMemberRequest(HttpServletRequest request) {
         String requestUri = request.getRequestURI();
-        return requestUri.contains("members");
+        return requestUri.contains("members") || requestUri.contains("reviews");
     }
 
 }

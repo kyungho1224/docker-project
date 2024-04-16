@@ -56,9 +56,9 @@ public class MemberService {
         return headers;
     }
 
-    public MemberDto.SimpleInfo getMember(String email) {
+    public Member getMember(String email) {
         return memberRepository.findByEmail(email)
-          .map(MemberDto.SimpleInfo::of)
           .orElseThrow(() -> new RuntimeException("Not Found Member"));
     }
+
 }
