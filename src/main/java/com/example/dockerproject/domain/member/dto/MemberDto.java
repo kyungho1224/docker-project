@@ -109,16 +109,12 @@ public class MemberDto {
         private Long id;
         private String name;
         private String email;
-        private MemberRole memberRole;
-        private LocalDateTime createdAt;
 
         public static SimpleInfo of(Member member) {
             return SimpleInfo.builder()
               .id(member.getId())
               .name(member.getName())
               .email(member.getEmail())
-              .memberRole(member.getMemberRole())
-              .createdAt(member.getCreatedAt())
               .build();
         }
 

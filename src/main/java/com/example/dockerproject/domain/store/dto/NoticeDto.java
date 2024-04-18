@@ -24,6 +24,7 @@ public class NoticeDto {
 
         @NotBlank(message = "내용은 필수 입력입니다")
         private String message;
+
         private RegisterStatus registerStatus;
 
     }

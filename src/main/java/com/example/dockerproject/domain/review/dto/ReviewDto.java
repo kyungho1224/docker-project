@@ -1,7 +1,6 @@
 package com.example.dockerproject.domain.review.dto;
 
 import com.example.dockerproject.common.constant.RegisterStatus;
-import com.example.dockerproject.domain.review.entity.Comment;
 import com.example.dockerproject.domain.review.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,11 +36,11 @@ public class ReviewDto {
 
         public static RegisterResponse of(Review review) {
             return RegisterResponse.builder()
-                .id(review.getId())
-                .title(review.getTitle())
-                .contents(review.getContents())
-                .createdAt(review.getCreatedAt())
-                .build();
+              .id(review.getId())
+              .title(review.getTitle())
+              .contents(review.getContents())
+              .createdAt(review.getCreatedAt())
+              .build();
         }
 
     }
@@ -51,6 +50,7 @@ public class ReviewDto {
     @Builder
     @Getter
     public static class SimpleInfo {
+
         private Long id;
         private String title;
         private LocalDateTime updatedAt;

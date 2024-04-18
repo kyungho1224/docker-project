@@ -7,6 +7,7 @@ import com.example.dockerproject.domain.review.dto.CommentDto;
 import com.example.dockerproject.domain.review.entity.Comment;
 import com.example.dockerproject.domain.review.entity.Review;
 import com.example.dockerproject.domain.review.repository.CommentRepository;
+import com.example.dockerproject.domain.review.repository.querydsl.CommentRepositoryCustomImpl;
 import com.example.dockerproject.exception.ApiErrorCode;
 import com.example.dockerproject.exception.ApiException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final CommentRepositoryCustomImpl commentRepositoryCustom;
     private final MemberService memberService;
     private final ReviewService reviewService;
 
@@ -60,7 +62,7 @@ public class CommentService {
     }
 
     public Comment getComment(Long commentId) {
-        return commentRepository.findFirstByIdAndRegisterStatus(commentId, RegisterStatus.REGISTERED)
+        return commentRepositoryCustom.findFirstByIdAndRegisterStatus(commentId, RegisterStatus.REGISTERED)
           .orElseThrow(() -> new ApiException(ApiErrorCode.NOT_FOUND_COMMENT));
     }
 

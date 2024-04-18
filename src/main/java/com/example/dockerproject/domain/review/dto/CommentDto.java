@@ -27,19 +27,20 @@ public class CommentDto {
     @Builder
     @Getter
     public static class Response {
+
         private Long id;
         private String contents;
-//        private ReviewDto.SimpleInfo review;
-        private Comment parent;
+        private String writer;
         private LocalDateTime createdAt;
+        private List<Response> commentList;
 
         public static Response of(Comment comment) {
             return Response.builder()
               .id(comment.getId())
               .contents(comment.getContents())
-//              .review(ReviewDto.SimpleInfo.of(comment.getReview()))
-              .parent(comment.getParent())
+              .writer(comment.getMember().getName())
               .createdAt(comment.getCreatedAt())
+              .commentList(comment.getComments().isEmpty() ? null : of(comment.getComments()))
               .build();
         }
 
